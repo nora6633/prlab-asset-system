@@ -1,0 +1,4 @@
+asset_no,name,alias,model,location,status,quantity,note
+PR-0001,示波器,oscilloscope,Tektronix MDO3024,實驗室 A,available,1,
+PR-0002,3D 印表機,3d-printer,Prusa MK4,實驗室 B,available,1,需預約使用
+PR-0003,熱風槍,heat-gun,Hakko FR-810B,工作台 C,available,2,
