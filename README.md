@@ -52,7 +52,7 @@ docker compose up --build
 
 啟動後：
 
-- Frontend：<http://localhost:8080>
+- Frontend：<http://localhost:8081>
 - Backend API：<http://localhost:8000/api/health>
 - Postgres：`localhost:5432`（帳密見 `.env`）
 
