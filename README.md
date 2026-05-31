@@ -3,15 +3,15 @@
 實驗室資產管理系統：瀏覽資產、申請租借、管理員管理資產與授權使用者。
 使用 Google OAuth 登入，後端簽發 JWT。
 
-## 技術棧
+## Tech Stack
 
 - **Frontend** — React (Vite) + TailwindCSS + React Query + @react-oauth/google
 - **Backend** — FastAPI + SQLAlchemy + Alembic + python-jose + google-auth
 - **Database** — PostgreSQL 16
-- **本地開發** — Docker Compose
-- **部署** — Kubernetes（manifests 放在 `k8s/`）
+- **Local Dev** — Docker Compose
+- **Deployment** — Kubernetes（manifests 放在 `k8s/`）
 
-## 專案結構
+## Project Structure
 
 ```
 prlab-asset-system/
@@ -26,9 +26,9 @@ prlab-asset-system/
 └── README.md
 ```
 
-## 權限模型
+## Permission Model
 
-| 身分 | 可做的事 |
+| Role | Permissions |
 | --- | --- |
 | 未登入 | 瀏覽 `GET /api/assets` 與 `GET /api/assets/:id` |
 | Google 已登入 | 申請租借、查看自己的租借紀錄 |
@@ -41,7 +41,7 @@ INSERT INTO authorized_users (email, added_by, added_at)
 VALUES ('you@example.com', 'bootstrap', NOW());
 ```
 
-## 本地啟動（docker-compose）
+## Local Development (docker-compose)
 
 ```bash
 cp .env.example .env
@@ -65,7 +65,7 @@ alembic revision --autogenerate -m "init"
 alembic upgrade head
 ```
 
-## 不用 Docker 跑後端
+## Run Backend Without Docker
 
 ```bash
 cd backend
@@ -75,7 +75,7 @@ export DATABASE_URL=postgresql://prlab:prlab@localhost:5432/prlab_assets
 uvicorn main:app --reload
 ```
 
-## 不用 Docker 跑前端
+## Run Frontend Without Docker
 
 ```bash
 cd frontend
@@ -84,7 +84,7 @@ npm install
 npm run dev    # http://localhost:5173 (proxy /api -> :8000)
 ```
 
-## 從 CSV 匯入資產
+## Import Assets from CSV
 
 CSV header：`asset_no,name,alias,model,location,status,quantity,note`
 
@@ -99,7 +99,7 @@ python scripts/import_assets.py scripts/sample_assets.csv --dry-run
 python scripts/import_assets.py scripts/sample_assets.csv --update-existing
 ```
 
-## 部署到 Kubernetes
+## Deploy to Kubernetes
 
 1. 建立 namespace 與 Secret（**請先填入真實值**，不要把 `secrets.yaml` 的真實版本 commit）：
    ```bash
@@ -116,14 +116,14 @@ python scripts/import_assets.py scripts/sample_assets.csv --update-existing
    kubectl apply -f k8s/ingress.yaml
    ```
 
-### Probe 與安全性
+### Probes & Security
 
 - Backend `readinessProbe` / `livenessProbe` → `GET /api/health`
 - Frontend `readinessProbe` / `livenessProbe` → `GET /health`（由 nginx 直接回 200）
 - Postgres probe → `pg_isready`
 - 所有密碼/密鑰透過 `prlab-secrets` 注入，**不寫在 Deployment yaml 內**
 
-## API 一覽
+## API Reference
 
 ```
 POST   /api/auth/google              # 用 Google ID token 換 JWT
@@ -145,9 +145,9 @@ DELETE /api/admin/authorized-users/:id
 GET    /api/health                   # readiness/liveness 用
 ```
 
-## 環境變數
+## Environment Variables
 
-| Variable | 用途 |
+| Variable | Purpose |
 | --- | --- |
 | `DATABASE_URL` | SQLAlchemy 連線字串 |
 | `JWT_SECRET` | 簽發 JWT 的密鑰 |
