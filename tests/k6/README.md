@@ -30,7 +30,7 @@ BASE_URL=http://localhost:8081 SCENARIO=smoke k6 run load.js
 
 ## 完整三場景（需要 K8s）
 
-> ⚠️ **不要用 `run-scenarios.sh` 配 `kubectl port-forward`** — kubectl 的 port-forward 只 tunnel 到單一 backing pod，不走 Service LB，三場景數據會幾乎一樣。
+> **不要用 `run-scenarios.sh` 配 `kubectl port-forward`** — kubectl 的 port-forward 只 tunnel 到單一 backing pod，不走 Service LB，三場景數據會幾乎一樣。
 > 用下面的 `run-scenarios-in-cluster.sh` 把 K6 跑在 cluster 內、透過 service DNS 才能真實看到 LB 效果。
 
 
