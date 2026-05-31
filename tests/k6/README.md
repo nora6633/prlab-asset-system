@@ -26,7 +26,14 @@ BASE_URL=http://localhost:8081 SCENARIO=smoke k6 run load.js
 
 結果會寫到 `results/smoke.json`。
 
+## 三場景比較結果 → [RESULTS.md](./RESULTS.md)
+
 ## 完整三場景（需要 K8s）
+
+> ⚠️ **不要用 `run-scenarios.sh` 配 `kubectl port-forward`** — kubectl 的 port-forward 只 tunnel 到單一 backing pod，不走 Service LB，三場景數據會幾乎一樣。
+> 用下面的 `run-scenarios-in-cluster.sh` 把 K6 跑在 cluster 內、透過 service DNS 才能真實看到 LB 效果。
+
+
 
 ### 1. 起 K8s cluster
 
@@ -64,17 +71,21 @@ kubectl -n prlab port-forward svc/frontend 8081:80
 
 也可以改用 NodePort / Ingress。Ingress 路徑記得對 frontend Service。
 
-### 4. 跑三場景
+### 4. 把 load.js 推進 cluster + 跑三場景
 
 ```bash
+kubectl -n prlab create configmap k6-load \
+  --from-file=load.js=tests/k6/load.js \
+  --dry-run=client -o yaml | kubectl apply -f -
+
 cd tests/k6
-BASE_URL=http://localhost:8081 ./run-scenarios.sh
+./run-scenarios-in-cluster.sh
 ```
 
 腳本會：
-1. `kubectl scale ... --replicas=1`，等 rollout 完，跑 K6 → `results/single.json`
-2. 縮放到 `--replicas=3`，跑 K6 → `results/replicated.json`
-3. 縮放到 `--replicas=3`，K6 開始後第 10 秒強刪一個 pod，跑完 → `results/chaos.json`
+1. `kubectl scale frontend --replicas=1`，等 rollout 完，跑 K6 Job → `results/single.k8s.log`
+2. 縮放到 `--replicas=3`，跑 K6 Job → `results/replicated.k8s.log`
+3. 縮放到 `--replicas=3`，K6 Job 開始後第 10 秒 `kubectl delete pod --force` 砍一個，跑完 → `results/chaos.k8s.log`
 
 ### 5. 比較結果
 
