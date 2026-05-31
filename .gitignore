@@ -46,3 +46,7 @@ coverage.xml
 
 # Alembic generated files we don't want to track
 # (versions are tracked; only ignore local lock-files etc.)
+
+# Personal demo / usage notes (kept locally, not for public repo)
+docs/USAGE.md
+docs/DEMO-RUNBOOK.md
