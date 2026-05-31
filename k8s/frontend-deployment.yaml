@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: prlab/frontend:apiproxy
+          image: prlab/frontend:oauth
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
