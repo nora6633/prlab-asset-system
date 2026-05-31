@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: prlab/backend:latest
+          image: prlab/backend:tz
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
