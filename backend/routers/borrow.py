@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -42,7 +42,7 @@ def create_borrow(
         asset_id=asset.id,
         borrower_email=user.email,
         borrower_name=user.name,
-        borrowed_at=datetime.utcnow(),
+        borrowed_at=datetime.now(timezone.utc),
         due_at=payload.due_at,
     )
     asset.status = AssetStatus.borrowed
@@ -66,7 +66,7 @@ def mark_returned(
             status_code=status.HTTP_409_CONFLICT, detail="Already returned"
         )
 
-    record.returned_at = datetime.utcnow()
+    record.returned_at = datetime.now(timezone.utc)
     asset = db.query(Asset).filter(Asset.id == record.asset_id).first()
     if asset:
         other_open = (

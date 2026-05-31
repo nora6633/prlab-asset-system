@@ -1,5 +1,5 @@
 import enum
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Column,
@@ -13,6 +13,10 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from database import Base
+
+
+def _utcnow() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 class AssetStatus(str, enum.Enum):
@@ -37,9 +41,9 @@ class Asset(Base):
     )
     quantity = Column(Integer, nullable=False, default=1)
     note = Column(Text, nullable=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=_utcnow)
     updated_at = Column(
-        DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
+        DateTime(timezone=True), nullable=False, default=_utcnow, onupdate=_utcnow
     )
 
     borrow_records = relationship(
@@ -56,10 +60,10 @@ class BorrowRecord(Base):
     )
     borrower_email = Column(String(255), nullable=False, index=True)
     borrower_name = Column(String(255), nullable=False)
-    borrowed_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    due_at = Column(DateTime, nullable=True)
-    returned_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    borrowed_at = Column(DateTime(timezone=True), nullable=False, default=_utcnow)
+    due_at = Column(DateTime(timezone=True), nullable=True)
+    returned_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=_utcnow)
 
     asset = relationship("Asset", back_populates="borrow_records")
 
@@ -70,4 +74,4 @@ class AuthorizedUser(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, nullable=False, index=True)
     added_by = Column(String(255), nullable=False)
-    added_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    added_at = Column(DateTime(timezone=True), nullable=False, default=_utcnow)
