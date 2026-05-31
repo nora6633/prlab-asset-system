@@ -66,8 +66,8 @@ wait_job() {
 save_logs() {
   local scenario="$1"
   local job="$2"
-  kubectl -n "${NAMESPACE}" logs "job/${job}" > "results/${scenario}.k8s.log"
-  echo ">>> saved results/${scenario}.k8s.log"
+  kubectl -n "${NAMESPACE}" logs "job/${job}" > "results/${scenario}.k8s.txt"
+  echo ">>> saved results/${scenario}.k8s.txt"
 }
 
 # Scenario A — single replica
@@ -96,5 +96,5 @@ wait_job "${JOB}"
 save_logs chaos "${JOB}"
 
 echo
-echo "=== All scenarios complete. Logs in results/*.k8s.log ==="
-ls -1 results/*.k8s.log
+echo "=== All scenarios complete. Logs in results/*.k8s.txt ==="
+ls -1 results/*.k8s.txt

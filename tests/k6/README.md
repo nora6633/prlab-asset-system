@@ -83,9 +83,9 @@ cd tests/k6
 ```
 
 腳本會：
-1. `kubectl scale frontend --replicas=1`，等 rollout 完，跑 K6 Job → `results/single.k8s.log`
-2. 縮放到 `--replicas=3`，跑 K6 Job → `results/replicated.k8s.log`
-3. 縮放到 `--replicas=3`，K6 Job 開始後第 10 秒 `kubectl delete pod --force` 砍一個，跑完 → `results/chaos.k8s.log`
+1. `kubectl scale frontend --replicas=1`，等 rollout 完，跑 K6 Job → `results/single.k8s.txt`
+2. 縮放到 `--replicas=3`，跑 K6 Job → `results/replicated.k8s.txt`
+3. 縮放到 `--replicas=3`，K6 Job 開始後第 10 秒 `kubectl delete pod --force` 砍一個，跑完 → `results/chaos.k8s.txt`
 
 ### 5. 比較結果
 

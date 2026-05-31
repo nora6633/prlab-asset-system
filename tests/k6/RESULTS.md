@@ -14,7 +14,7 @@
 | **replicated** | 3 | LB 分散 | 14,661 | 418.4 | **1.2ms** | **3.7ms** | 8.3ms | 15.4ms | 0.00% |
 | **chaos** | 3 | t+10s 強刪 1 pod | 14,634 | 417.7 | 1.3ms | 3.7ms | 12.0ms | 27.7ms | **0.03%** |
 
-原始 K6 文字輸出在 [`results/{single,replicated,chaos}.k8s.log`](./results/)。
+原始 K6 文字輸出在 [`results/{single,replicated,chaos}.k8s.txt`](./results/)。
 
 ## 解讀
 
@@ -56,5 +56,5 @@ cd tests/k6
 ./run-scenarios-in-cluster.sh
 
 # 4. 看結果
-ls -1 results/*.k8s.log
+ls -1 results/*.k8s.txt
 ```
