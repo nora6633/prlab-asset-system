@@ -1,5 +1,7 @@
 # PRLab Asset System
 
+[![DevSecOps Pipeline](https://github.com/nora6633/prlab-asset-system/actions/workflows/devsecops.yml/badge.svg)](https://github.com/nora6633/prlab-asset-system/actions/workflows/devsecops.yml)
+
 實驗室資產管理系統：瀏覽資產、申請租借、管理員管理資產與授權使用者。
 使用 Google OAuth 登入，後端簽發 JWT。
 
@@ -144,6 +146,20 @@ DELETE /api/admin/authorized-users/:id
 
 GET    /api/health                   # readiness/liveness 用
 ```
+
+## DevSecOps Pipeline
+
+每次 push 到 `main` 會觸發 `.github/workflows/devsecops.yml`，包含七個並行 job：
+
+| Stage | Job | Tool |
+| --- | --- | --- |
+| Install + Test | `test-backend` | pytest (FastAPI TestClient + SQLite) |
+| Build / Package | `build-frontend` | Vite build → 上傳 dist artifact |
+| Dependency scan | `dep-scan-python` | pip-audit（PyPI Advisory DB） |
+| Dependency scan | `dep-scan-npm` | npm audit（GHSA） |
+| Secret scan | `secret-scan` | gitleaks |
+| Static code scan | `sast-bandit` | bandit (Python SAST) |
+| SAST + SBOM | `shiftleft-scan` | ShiftLeft Scan（含 SBOM 產出） |
 
 ## Environment Variables
 
