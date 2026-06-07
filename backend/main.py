@@ -24,7 +24,7 @@ def on_startup() -> None:
 
 @app.get("/api/health")
 def healthcheck():
-    return {"status": "ok"}
+    return {"status": "okay"}
 
 
 app.include_router(auth.router)
