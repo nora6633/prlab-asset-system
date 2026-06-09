@@ -189,3 +189,10 @@ GET    /api/health                   # readiness/liveness 用
 | `APP_ENV` | `development` / `production`，影響 CORS 等行為 |
 | `VITE_API_BASE_URL` | 前端打 API 的位址（預設 `/api`） |
 | `VITE_GOOGLE_CLIENT_ID` | 前端 `<GoogleLogin>` 用的 client ID |
+
+## Demo
+- Google OAuth 登入/資產列表<img width="1170" height="322" alt="image" src="https://github.com/user-attachments/assets/04df7417-1bbd-45b6-9ddc-8f2b52a63ab7" />
+- 申請租借<img width="1122" height="412" alt="image" src="https://github.com/user-attachments/assets/05faaebe-5f40-4e24-bf57-097edc8d95a1" />
+- Admin 視角<img width="1153" height="743" alt="image" src="https://github.com/user-attachments/assets/87fef74a-6311-4c6a-8ca3-c8c89277296d" />
+
+
