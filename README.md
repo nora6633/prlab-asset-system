@@ -5,6 +5,8 @@
 實驗室資產管理系統：瀏覽資產、申請租借、管理員管理資產與授權使用者。
 使用 Google OAuth 登入，後端簽發 JWT。
 
+Live demo:https://youtu.be/KX-ZaC9Ad1U?si=co3Ptoo2HSlzL1xO
+ 
 ## Tech Stack
 
 - **Frontend** — React (Vite) + TailwindCSS + React Query + @react-oauth/google
