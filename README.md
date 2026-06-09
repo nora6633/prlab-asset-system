@@ -17,12 +17,15 @@
 
 ```
 prlab-asset-system/
-├── frontend/      # React + Vite
-├── backend/       # FastAPI
-│   ├── routers/   # auth.py, assets.py, borrow.py, admin.py
-│   └── alembic/   # 資料庫 migration
-├── k8s/           # Kubernetes manifests
-├── scripts/       # 工具腳本（CSV 匯入等）
+├── .github/workflows/  # CI: DevSecOps pipeline
+├── frontend/           # React + Vite
+├── backend/            # FastAPI
+│   ├── routers/        # auth.py, assets.py, borrow.py, admin.py
+│   ├── tests/          # pytest 測試（FastAPI TestClient + SQLite）
+│   └── alembic/        # 資料庫 migration
+├── k8s/                # Kubernetes manifests
+├── scripts/            # 工具腳本（CSV 匯入等）
+├── security/           # CVE 修補紀錄
 ├── docker-compose.yml
 ├── .env.example
 └── README.md
@@ -72,10 +75,22 @@ alembic upgrade head
 ```bash
 cd backend
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.txt          # production deps
+# 或：pip install -r requirements-dev.txt  # 同上 + pytest / httpx
 export DATABASE_URL=postgresql://prlab:prlab@localhost:5432/prlab_assets
 uvicorn main:app --reload
 ```
+
+## Run Tests
+
+```bash
+cd backend
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements-dev.txt
+pytest -v
+```
+
+4 個測試走 SQLite in-file，不需要起 Postgres，也不需要任何外部服務。
 
 ## Run Frontend Without Docker
 
@@ -160,6 +175,8 @@ GET    /api/health                   # readiness/liveness 用
 | Secret scan | `secret-scan` | gitleaks |
 | Static code scan | `sast-bandit` | bandit (Python SAST) |
 | SAST + SBOM | `shiftleft-scan` | ShiftLeft Scan（含 SBOM 產出） |
+
+歷史的 CVE 修補紀錄（vite 5→8、python-jose、starlette 等套件升版）整理在 [`security/CVE-REPORT.md`](security/CVE-REPORT.md)。
 
 ## Environment Variables
 
